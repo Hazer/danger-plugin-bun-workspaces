@@ -12,4 +12,4 @@ async function bunWorkspaceChecks(packageOptions: BunLockPluginOptions) {
   await bunLockfilesPlugin(packageOptions);
 }
 
-export { bunLockfilesPlugin, bunWorkspaceChecks };
+export { bunLockfilesPlugin, bunWorkspaceChecks, type BunLockPluginOptions };
