@@ -1,0 +1,35 @@
+{
+  "name": "danger-plugin-bun-workspaces",
+  "description": "Danger.js Plugin to help with useful checks for Qualitätskontrolle (Quality Control) in Bun Workspaces",
+  "author": {
+    "name": "Vithorio Polten",
+    "email": "reach@vithor.io"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hazer/danger-plugin-bun-workspaces.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Hazer/danger-plugin-bun-workspaces/issues"
+  },
+  "homepage": "https://github.com/Hazer/danger-plugin-bun-workspaces#readme",
+  "keywords": [
+    "danger",
+    "danger-plugin",
+    "bun",
+    "bun-workspace",
+    "lockfile"
+  ],
+  "version": "0.0.0-development",
+  "module": "index.ts",
+  "type": "module",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "danger": "*"
+  },
+  "peerDependencies": {
+    "danger": "*",
+    "typescript": "^5"
+  }
+}

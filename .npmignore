@@ -1,0 +1,9 @@
+.editorconfig
+node_modules/
+src/
+CLAUDE.md
+.cursor/
+mise.toml
+**/*.test.ts
+bun.lock
+.gitignore
