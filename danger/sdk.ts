@@ -6,7 +6,7 @@
 // https://github.com/danger/danger-js/discussions/1153#discussioncomment-10981472
 
 import type { DangerRuntimeContainer, Scheduleable } from "danger";
-import type { DangerDSLType } from "./node_modules/danger/distribution/dsl/DangerDSL";
+import type { DangerDSLType } from "../node_modules/danger/distribution/dsl/DangerDSL";
 import type {
   JSONDiff as DangerJSONDiff,
   JSONDiffValue as DangerJSONDiffValue,

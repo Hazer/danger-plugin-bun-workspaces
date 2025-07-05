@@ -1,5 +1,7 @@
-import "./danger/sdk";
-
+import { env } from "bun";
+if (env.PLUGIN_DEV) {
+  import("./danger/sdk");
+}
 export enum ChangeType {
   Valid = "Valid",
   Violation = "Violation",
@@ -23,9 +25,12 @@ export interface BunLockPluginOptions {
 // Helper: map an array to Promises and await them all
 async function parallelMap<T, R>(
   items: T[],
-  fn: (item: T) => Promise<R>,
+  fn: (item: T) => Promise<R> | null,
 ): Promise<R[]> {
-  return Promise.all(items.map(fn));
+  return new Promise((resolve, reject) => {
+    const mapped = items.map(fn).filter<Promise<R>>((item) => item !== null);
+    resolve(Promise.all(mapped));
+  });
 }
 
 // Helper: take a record of arrays grouped by op,
@@ -97,8 +102,11 @@ async function generateMarkdownReport(
   const violKeys = Object.keys(report.violations);
 
   const totalBunChanges =
-    validKeys.reduce((sum, k) => sum + report.validChanges[k].length, 0) +
-    violKeys.reduce((sum, k) => sum + report.violations[k].length, 0);
+    validKeys.reduce(
+      (sum, k) => sum + (report.validChanges[k]?.length ?? 0),
+      0,
+    ) +
+    violKeys.reduce((sum, k) => sum + (report.violations[k]?.length ?? 0), 0);
 
   // Special case 1
   if (totalBunChanges === 0 && pkgChanged) {
@@ -152,12 +160,16 @@ async function generateMarkdownReport(
 
   // Build all rows in parallel
   // Kick off both groups without awaiting yet
-  const validRowsPromise = parallelMap(validKeys, (p) =>
-    buildRow(p, report.validChanges[p], false),
-  );
-  const violRowsPromise = parallelMap(violKeys, (p) =>
-    buildRow(p, report.violations[p], true),
-  );
+  const validRowsPromise = parallelMap(validKeys, (p) => {
+    const change = report.validChanges[p];
+    if (!change) return null;
+    return buildRow(p, change, false);
+  });
+  const violRowsPromise = parallelMap(violKeys, (p) => {
+    const change = report.violations[p];
+    if (!change) return null;
+    return buildRow(p, change, true);
+  });
 
   // Now await them in parallel
   const [validRows, violRows] = await Promise.all([

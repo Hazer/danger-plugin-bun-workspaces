@@ -1,7 +1,6 @@
-import "./danger/sdk";
 import {
-  bunLockfilesPlugin,
   type BunLockPluginOptions,
+  bunLockfilesPlugin,
 } from "./bunLockfilesPlugin";
 
 async function bunWorkspaceChecks(packageOptions: BunLockPluginOptions) {
